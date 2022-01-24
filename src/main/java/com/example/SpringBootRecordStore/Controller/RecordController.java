@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 public class RecordController {
 
@@ -58,8 +60,9 @@ public class RecordController {
     }
 
     @GetMapping("getRecords/artist")
-    public void getRecordsByArtistName(@RequestParam(value="artistname")String artistname)
+    public List<Record> getRecordsByArtistName(@RequestParam(value="artistname")String artistname)
     {
-        repository.
+
+        return repository.findAllByAuthor(authorname);
     }
 }
