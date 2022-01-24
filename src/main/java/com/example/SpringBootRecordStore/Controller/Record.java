@@ -42,11 +42,11 @@ public class Record {
 
     public void setIsmn(String ismn) { this.ismn = ismn;}
 
-    public String getAisle() {
+    public int getAisle() {
         return aisle;
     }
 
-    public void setAisle(String aisle) {
+    public void setAisle(int aisle) {
         this.aisle = aisle;
     }
 
