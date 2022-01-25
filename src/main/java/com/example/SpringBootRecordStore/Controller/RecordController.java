@@ -91,4 +91,10 @@ public class RecordController {
         Logger.info("Record is deleted");
         return new ResponseEntity<>("Record is deleted", HttpStatus.CREATED);
     }
+
+    @GetMapping("/getRecords")
+    public List<Record> getRecords()
+    {
+        return repository.findAll();
+    }
 }
