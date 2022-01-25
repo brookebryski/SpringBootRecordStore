@@ -2,6 +2,8 @@ package com.example.SpringBootRecordStore.Controller;
 
 import com.example.SpringBootRecordStore.Repository.RecordRepository;
 import com.example.SpringBootRecordStore.Service.RecordService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,8 @@ public class RecordController {
     @Autowired
     RecordService recordService;
 
+    private static final Logger Logger= LoggerFactory.getLogger(RecordController.class);
+
     @PostMapping("/addRecord")
     public ResponseEntity<AddResponse> addRecordImplementation(@RequestBody Record record)
     {
@@ -27,6 +31,7 @@ public class RecordController {
         AddResponse ad = new AddResponse();
         if(!recordService.checkRecordAlreadyExists(id))
         {
+            Logger.info("Record does not exist, creating record");
             record.setId(id);
             repository.save(record);
             HttpHeaders headers = new HttpHeaders();
@@ -39,6 +44,7 @@ public class RecordController {
         // add record details into database
         else
         {
+            Logger.info("Record exists, skipping creation");
             ad.setMsg("Record already exists.");
             ad.setId(id);
             return new ResponseEntity<AddResponse>(ad, HttpStatus.ACCEPTED);
@@ -82,6 +88,7 @@ public class RecordController {
     {
         Record recdelete =repository.findById(record.getId()).get();
         repository.delete(recdelete);
+        Logger.info("Record is deleted");
         return new ResponseEntity<>("Record is deleted", HttpStatus.CREATED);
     }
 }
