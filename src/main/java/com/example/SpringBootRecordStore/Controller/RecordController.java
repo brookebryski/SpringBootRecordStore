@@ -62,7 +62,26 @@ public class RecordController {
     @GetMapping("getRecords/artist")
     public List<Record> getRecordsByArtistName(@RequestParam(value="artistname")String artistname)
     {
+        return repository.findAllByArtist(artistname);
+    }
 
-        return repository.findAllByAuthor(authorname);
+    @PutMapping("/updateRecord/{id}")
+    public ResponseEntity<Record> updateRecord(@PathVariable(value="id")String id, @RequestBody Record record)
+    {
+        Record existingRecord = repository.findById(id).get();
+
+        existingRecord.setAisle(record.getAisle());
+        existingRecord.setArtist(record.getArtist());
+        existingRecord.setRecord_name(record.getRecord_name());
+        repository.save(existingRecord);
+        return new ResponseEntity<Record>(existingRecord, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteRecord")
+    public ResponseEntity<String> deleteRecordById(@RequestBody Record record)
+    {
+        Record recdelete =repository.findById(record.getId()).get();
+        repository.delete(recdelete);
+        return new ResponseEntity<>("Record is deleted", HttpStatus.CREATED);
     }
 }
