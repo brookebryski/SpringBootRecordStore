@@ -15,7 +15,15 @@ public class RecordService {
     @Autowired
     RecordRepository repository;
 
-    public String buildId(String ismn, int aisle) { return ismn+aisle; }
+    public String buildId(String ismn, int aisle)
+    {
+        if(ismn.startsWith("Z"))
+        {
+            return "OLD"+ismn+aisle;
+        }
+        return ismn+aisle;
+    }
+
     public boolean checkRecordAlreadyExists(String id)
     {
         Optional<Record> rec=repository.findById(id);
