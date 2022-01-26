@@ -32,4 +32,9 @@ public class RecordService {
         else
             return false;
     }
+
+    public Record getRecordById(String id)
+    {
+        return repository.findById(id).get();
+    }
 }
