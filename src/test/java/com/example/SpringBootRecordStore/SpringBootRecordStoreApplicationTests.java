@@ -22,10 +22,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.RequestEntity.post;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+
+// use mockito for external dependencies
+// mockito is used to mock your methods, but mockmvc is used to mock your service calls
+// mockmvc can only be used on controller methods
 
 class SpringBootRecordStoreApplicationTests {
 
@@ -79,7 +85,8 @@ class SpringBootRecordStoreApplicationTests {
 		when(recordService.checkRecordAlreadyExists(rec.getId())).thenReturn(false);
 		when(repository.save(any())).thenReturn(rec);
 		this.mockMvc.perform(post("/addRecord")).contentType(MediaType.APPLICATION_JSON);
-		.content(jsonString).andExpect(status().isCreated());
+		.content(jsonString).andDo(print()).andExpect(status().isCreated());
+		.andExpect(jsonPath("$.id").value(rec.getId()));
 	}
 
 	public Record buildRecord()
